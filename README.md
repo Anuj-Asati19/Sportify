@@ -1,8 +1,6 @@
-Software Lab Project Proposal
+#SPORTIFY
 
-Project Title: Sports Partner Finder App
-
-Project Overview
+Overview:
 
 The aim of this project is to develop a web application that will enable users to easily find suitable partners for playing various sports nearby. This application will facilitate the matchmaking process, synchronize game timings, allow users to communicate, and even provide an option for booking public sports grounds. The project will consist of both frontend and backend components, utilizing technologies like JavaScript, HTML, CSS, ReactJS, Python, PostgreSQL, Java, GIT/GitHub, and QR code authentication.
 
