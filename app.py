@@ -17,11 +17,22 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        data = request.form  # Use request.form to access form data from POST request
-        new_user = User(email=data['email'], username=data['username'])
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify(message='User registered successfully')
+        data = request.form
+        existing_user = User.query.filter_by(email=data['email']).first()
+        if existing_user:
+            # User with the provided email exists, check if the username matches
+            if existing_user.username != data['username']:
+                # Username does not match, show an alert
+                return render_template('register.html', alert_message='Username does not match the provided email.')
+            else:
+                # Username matches, log the user in
+                return render_template('home.html')
+        else:
+            # User does not exist, create a new user
+            new_user = User(email=data['email'], username=data['username'])
+            db.session.add(new_user)
+            db.session.commit()
+            return render_template('home.html')
     else:
         # Handle GET request for the registration form page here (if needed)
         return render_template('register.html')
