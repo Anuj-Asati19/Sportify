@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+
+<body>
+    <h1>User Profile</h1>
+    <p>User ID: {{ user.id }}</p>
+    <p>Email: {{ user.email }}</p>
+
+    <h2>Sports Preferences</h2>
+    <form method="post" action="/update_preferences">
+        <label for="sports_preferences">Sports Preferences:</label>
+        <input type="text" id="sports_preferences" name="sports_preferences" value="{{ user.sports_preferences }}">
+        <input type="submit" value="Update Preferences">
+    </form>
+</body>
+
+</html>
