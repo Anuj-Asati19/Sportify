@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import secrets
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:shivang123@localhost/sportify'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:johncena@localhost/Sportify'
 db = SQLAlchemy(app)
 app.secret_key = secrets.token_hex(16)
 
