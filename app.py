@@ -11,7 +11,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    sports_preference = db.Column(db.String(255),nullable=False)
+    # sports_preference = db.Column(db.String(255),nullable=False)
     
 @app.route('/')
 def index():
@@ -41,7 +41,7 @@ def register():
         if existing_user:
             return render_template('register.html', alert_message='User already exist')
         else:
-            new_user = User(email=data['email'], username=data['username'],sports_preference=data['sport'])
+            new_user = User(email=data['email'], username=data['username'])
             db.session.add(new_user)
             db.session.commit()
             session['user_id'] = new_user.id
