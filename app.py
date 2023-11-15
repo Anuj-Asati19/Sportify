@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect
+from flask import Flask, request, render_template, session, redirect , flash
 from flask_sqlalchemy import SQLAlchemy
 import secrets
 
@@ -71,14 +71,16 @@ def update_preferences():
 
             # Commit the changes to the database
             db.session.commit()
-
+            flash('Preferences updated successfully!', 'success')
             # Redirect to the profile page after updating preferences
             return redirect(f'/profile/{user.id}')
         else:
             # Handle case where user does not exist
+            flash('User not found.', 'error')
             pass
     else:
         # Handle case where user is not logged in
+        flash('User not logged in.', 'error')
         pass
 
 if __name__ == '__main__':
