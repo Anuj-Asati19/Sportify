@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, render_template,session,redirect
 from flask_sqlalchemy import SQLAlchemy
+from os import environ
 import secrets
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:shivang123@localhost/sportify'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URL')
 db = SQLAlchemy(app)
 app.secret_key = secrets.token_hex(16)
 
@@ -81,4 +82,4 @@ def update_preferences():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port=int("5000"),debug=True)
