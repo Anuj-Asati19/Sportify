@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  flask_app:
+    container_name: flask_app
+    image: sportify/live_matching:1.0.0
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_URL=postgresql://admin:admin@sportify:5432/postgres
+    depends_on:
+      - sportify
+  sportify:
+    container_name: sportify
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
