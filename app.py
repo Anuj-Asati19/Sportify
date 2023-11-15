@@ -45,7 +45,7 @@ def register():
         if existing_user:
             return render_template('register.html', alert_message='User already exists')
         else:
-            new_user = NewUser(email=data['email'], username=data['username'], sports_preference=data['sport'], phone_number=data['phone'])
+            new_user = NewUser(email=data['email'], username=data['username'], sports_preference=data['sport'].lower(), phone_number=data['phone'])
             db.session.add(new_user)
             db.session.commit()
             session['user_identifier'] = new_user.email
@@ -65,7 +65,7 @@ def update_preferences():
         user = NewUser.query.filter_by(email=user_identifier).first()
         if user:
             # Get sports preference from the form data
-            sports_preference = request.form.get('sports_preferences')
+            sports_preference = request.form.get('sports_preferences').lower()
             # Update the sports_preference column in the database
             user.sports_preference = sports_preference
 
@@ -82,6 +82,62 @@ def update_preferences():
         # Handle case where user is not logged in
         flash('User not logged in.', 'error')
         pass
+
+@app.route('/football_users')
+def football_users():
+    user_identifier = session.get('user_identifier')
+    if user_identifier:
+        # Exclude the currently logged-in user
+        users = NewUser.query.filter_by(sports_preference='football').filter(NewUser.email != user_identifier).all()
+        return render_template('users_list.html', users=users, sport='Football')
+    else:
+        flash('User not logged in.', 'error')
+        return redirect('/')
+
+@app.route('/basketball_users')
+def basketball_users():
+    user_identifier = session.get('user_identifier')
+    if user_identifier:
+        # Exclude the currently logged-in user
+        users = NewUser.query.filter_by(sports_preference='basketball').filter(NewUser.email != user_identifier).all()
+        return render_template('users_list.html', users=users, sport='BasketBall')
+    else:
+        flash('User not logged in.', 'error')
+        return redirect('/')
+
+@app.route('/tennis_users')
+def tennis_users():
+    user_identifier = session.get('user_identifier')
+    if user_identifier:
+        # Exclude the currently logged-in user
+        users = NewUser.query.filter_by(sports_preference='tennis').filter(NewUser.email != user_identifier).all()
+        return render_template('users_list.html', users=users, sport='Tennis')
+    else:
+        flash('User not logged in.', 'error')
+        return redirect('/')
+
+@app.route('/badminton_users')
+def badminton_users():
+    user_identifier = session.get('user_identifier')
+    if user_identifier:
+        # Exclude the currently logged-in user
+        users = NewUser.query.filter_by(sports_preference='badminton').filter(NewUser.email != user_identifier).all()
+        return render_template('users_list.html', users=users, sport='Badminton')
+    else:
+        flash('User not logged in.', 'error')
+        return redirect('/')
+
+@app.route('/swimming_users')
+def swimming_users():
+    user_identifier = session.get('user_identifier')
+    if user_identifier:
+        # Exclude the currently logged-in user
+        users = NewUser.query.filter_by(sports_preference='swimming').filter(NewUser.email != user_identifier).all()
+        return render_template('users_list.html', users=users, sport='Swimming')
+    else:
+        flash('User not logged in.', 'error')
+        return redirect('/')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
