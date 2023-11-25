@@ -8,11 +8,21 @@
 </head>
 
 <body>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
     <h1>User Profile</h1>
-    <p>User ID: {{ user.id }}</p>
+    <p>Username: {{ user.username }}</p>
     <p>Email: {{ user.email }}</p>
+    <p>Sport: {{ user.sports_preference }}</p>
 
-    <h2>Sports Preferences</h2>
+    <h2>Change Sport Preferences</h2>
     <form method="post" action="/update_preferences">
         <label for="sports_preferences">Sports Preferences:</label>
         <input type="text" id="sports_preferences" name="sports_preferences" value="{{ user.sports_preferences }}">
