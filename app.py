@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect , flash
+from flask import Flask, request, render_template, session, redirect , flash, url_for
 from flask_sqlalchemy import SQLAlchemy
 import secrets
 
@@ -31,11 +31,16 @@ def login():
                 return render_template('login.html', alert_message='Username does not match the provided email.')
             else:
                 session['user_identifier'] = existing_user.email
-                return render_template('home.html', user_id=existing_user.id)
+                return redirect(url_for('home', user_id=existing_user.id))
+                # return render_template('home.html', user_id=existing_user.id)
         else:
             return render_template('login.html', alert_message='User does not exist')
     else:
         return render_template('login.html')
+    
+@app.route('/home/<int:user_id>', methods=['GET'])
+def home(user_id):
+    return render_template('home.html', user_id=user_id)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -49,11 +54,12 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             session['user_identifier'] = new_user.email
-            return render_template('home.html', user_id=new_user.id)
+            return redirect(url_for('home', user_id=new_user.id))
+
     else:
         return render_template('register.html')
 
-@app.route('/profile/<int:user_id>')
+@app.route('/profile/<int:user_id>', methods=['GET'])
 def profile(user_id):
     user = NewUser.query.get(user_id)
     return render_template('profile.html', user=user)

@@ -28,6 +28,9 @@
         <input type="text" id="sports_preferences" name="sports_preferences" value="{{ user.sports_preferences }}">
         <input type="submit" value="Update Preferences">
     </form>
+    <!-- profile.html -->
+    <a href="{{ url_for('home', user_id=user.id) }}">Back to Homepage</a>
+
 </body>
 
 </html>
