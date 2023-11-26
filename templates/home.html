@@ -10,6 +10,7 @@
 
 <body>
     <header>
+
         <div style="height: 200px; width: 200px;"  class="sportify-logo">
             <img src="{{ url_for('static', filename='sportify-logo.png') }}" alt="Sportify Logo">
         </div>
@@ -17,30 +18,51 @@
             <a href="/profile/{{ user_id }}"><img src="{{ url_for('static', filename='profile-icon.png') }}" alt="Profile"></a>
         </div>
         <div class="notification">
-            <a href="#"><img src="{{ url_for('static', filename='notification-icon.png') }}" alt="Notification"></a>
+            <a href="#" onclick="showNotifications()"><img src="{{ url_for('static', filename='notification-icon.png') }}" alt="Notification"></a>
+        </div>
+
+        <!-- Notification pop-up -->
+        <div id="notificationPopup" class="popup">
+            <h2>Notifications:</h2>
+            <ul>
+                {% for message in message_list %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <button onclick="hideNotifications()">Close</button>
         </div>
     </header>
 
 
     <main>
-        <div class="sports">
-            <div class="sport-option">
-                <a href="/football_users">Football</a>
-            </div>
-            <div class="sport-option">
-                <a href="/basketball_users">Basketball</a>
-            </div>
-            <div class="sport-option">
-                <a href="/tennis_users">Tennis</a>
-            </div>
-            <div class="sport-option">
-                <a href="/badminton_users">Badminton</a>
-            </div>
-            <div class="sport-option">
-                <a href="/swimming_users">Swimming</a>
-            </div>
+        <div class="sport-option">
+            <a href="/sport/{{ user_id }}?name=football">Football</a>
+        </div>
+        <div class="sport-option">
+            <a href="/sport/{{ user_id }}?name=basketball">Basketball</a>
+        </div>
+        <div class="sport-option">
+            <a href="/sport/{{ user_id }}?name=tennis">Tennis</a>
+        </div>
+        <div class="sport-option">
+            <a href="/sport/{{ user_id }}?name=badminton">Badminton</a>
+        </div>
+        <div class="sport-option">
+            <a href="/sport/{{ user_id }}?name=swimming">Swimming</a>
+        </div>
         </div>
     </main>
+
+    <script>
+        // JavaScript functions to show and hide the notification pop-up
+        function showNotifications() {
+            document.getElementById("notificationPopup").style.display = "block";
+        }
+
+        function hideNotifications() {
+            document.getElementById("notificationPopup").style.display = "none";
+        }
+    </script>
 </body>
 
 </html>
