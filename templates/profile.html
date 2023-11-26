@@ -5,29 +5,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0; /* Adjusted padding to remove default body padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: black;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin: 0; /* Remove margin */
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #555;
+        }
+
+        a:hover {
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class="flashes">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-    {% endwith %}
-    <h1>User Profile</h1>
-    <p>Username: {{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Sport: {{ user.sports_preference }}</p>
+    <div class="navbar">
+        <h1 style="color: white;">SPORTIFY : The Ultimate Sporting App</h1>
+    </div>
 
-    <h2>Change Sport Preferences</h2>
-    <form method="post" action="/update_preferences">
-        <label for="sports_preferences">Sports Preferences:</label>
-        <input type="text" id="sports_preferences" name="sports_preferences" value="{{ user.sports_preferences }}">
-        <input type="submit" value="Update Preferences">
-    </form>
+    <div class="form-container">
+        <img style="height: 150px; width: 150px;" src="{{ url_for('static', filename='sportify-logo.png') }}" alt="Sportify Logo">
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="flashes">
+                <h2>{% for message in messages %}</h2>
+                {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+            <h1>User Profile</h1>
+            <p>Username: {{ user.username }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Sport: {{ user.sports_preference }}</p>
+
+            <h2>Change Sport Preferences</h2>
+            <form method="post" action="/update_preferences">
+                <label for="sports_preferences">Sports Preferences:</label>
+                <select id="sports_preferences" name="sports_preferences">
+                    <option value="football">Football</option>
+                    <option value="tennis">Tennis</option>
+                    <option value="badminton">Badminton</option>
+                    <option value="basketball">Basketball</option>
+                    <option value="swimming">Swimming</option>
+                </select>
+                <input type="submit" value="Update Preferences">
+            </form>
+            <a href="{{ url_for('home', user_id=user.id) }}">Back to Homepage</a>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -1,46 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Sportify</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-</head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>home</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      background: #EEE;
+      font-family: Optima;
+    }
+    header {
+    background-color: rgb(183, 177, 177); /* Lighter color for the header */
+    color: #c2b5b5;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
 
+    header .sportify-logo img {
+        width: 70px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+
+    header .user-profile img{
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        color: rgb(138,9,23);
+    }
+
+    header .notification img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+        color: rgb(138,9,23);
+    }
+    .navbar {
+      width: 100%;
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+    }
+    .register-button {
+        width: 150px;
+        margin-top:auto;
+        padding: 12px;
+        font-size: x-large;
+        border: none;
+        border-radius: 5px;
+        background-color: #000000;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-align: center;
+        align-items: center;
+        margin-left: 650px;
+    }
+
+    .register-button:hover {
+        background-color: #5f666c;
+    }
+
+    .wrap {
+      overflow: hidden;
+      margin: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .box {
+      position: relative;
+      width: 30%;
+      margin-top: 2%;
+      border-radius: 10%;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+    .boxInner {
+      position: relative;
+      overflow: hidden;
+    }
+    .boxInner img {
+      width: 100%;
+      display: block;
+    }
+    .boxInner .titleBox {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-size: 1.2em;
+      line-height: 1.1;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: .3em;
+    }
+
+    .titleBox {
+      text-align: center;
+    }
+
+    
+
+    @media only screen and (max-width: 650px) {
+      .box {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
 <body>
     <header>
-        <div style="height: 200px; width: 200px;"  class="sportify-logo">
-            <img src="{{ url_for('static', filename='sportify-logo.png') }}" alt="Sportify Logo">
-        </div>
         <div class="user-profile">
             <a href="/profile/{{ user_id }}"><img src="{{ url_for('static', filename='profile-icon.png') }}" alt="Profile"></a>
+        </div>
+        <div class="user-profile">
+            <h1 style="color: white;">SPORTIFY</h1>
         </div>
         <div class="notification">
             <a href="#"><img src="{{ url_for('static', filename='notification-icon.png') }}" alt="Notification"></a>
         </div>
     </header>
-
-
-    <main>
-        <div class="sports">
-            <div class="sport-option">
-                <a href="/football_users">Football</a>
-            </div>
-            <div class="sport-option">
-                <a href="/basketball_users">Basketball</a>
-            </div>
-            <div class="sport-option">
-                <a href="/tennis_users">Tennis</a>
-            </div>
-            <div class="sport-option">
-                <a href="/badminton_users">Badminton</a>
-            </div>
-            <div class="sport-option">
-                <a href="/swimming_users">Swimming</a>
-            </div>
+  <div class="wrap">
+    <div class="box" style="margin-top: 25px; margin-bottom: 20px; margin-left: 200px; margin-right: 75px;">
+      <div class="boxInner">
+        <a href="/football_users"><img style="height: 400px; width: 430px;" src="/static/footlball.jpg" alt="Football"></a>
+        <div class="titleBox">FOOTBALL</div>
+      </div>
+    </div>
+    <div class="box" style="margin-top: 25px; margin-bottom: 20px;  margin-left: 75px; margin-right: 200px;">
+        <div class="boxInner">
+            <a href="/tennis_users"><img style="height: 400px; width: 430px;" src="/static/tennis.jpg" alt="Tennis"></a>   
+               <div class="titleBox">TENNIS</div>
         </div>
-    </main>
+      </div>
+      <div class="box" style="margin-top: 20px; margin-bottom: 20px; margin-left: 200px; margin-right: 75px;">
+      <div class="boxInner" >
+        <a href="/badminton_users"><img style="height: 400px; width: 430px;" src="/static/badminton.jpeg" alt="Badminton"></a>   
+            <div class="titleBox">BADMINTON</div>
+      </div>
+    </div>
+    <div class="box" style="margin-top: 20px; margin-bottom: 20px;  margin-left: 75px; margin-right: 200px;">
+      <div class="boxInner">
+        <a href="/basketball_users"><img style="height: 400px; width: 430px;" src="/static/basketball.png" alt="Basketball"></a>   
+            <div class="titleBox">BASKETBALL</div>
+      </div>
+    </div>
+    <div class="box" style="margin-top: 20px; margin-bottom: 10px; margin-left: 500px; margin-right: 500px; text-align: center;">
+      <div class="boxInner" >
+        <a href="/swimming_users"><img style="height: 400px; width: 430px;" src="/static/swimming.jpg" alt="Swimming"></a>
+        <div class="titleBox">SWIMMING</div>
+      </div>
+    </div>
+  </div>
+  </div>
 </body>
-
 </html>
