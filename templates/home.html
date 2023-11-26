@@ -107,6 +107,49 @@
       text-align: center;
     }
 
+    .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #292424;
+    border: 1px solid #ddd;
+    z-index: 1;
+    max-width: 400px; /* Adjust the maximum width as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    border-radius: 8px; /* Add rounded corners */
+    }
+
+    .popup h2 {
+        margin-bottom: 10px;
+        color: rgb(253,231,233);
+    }
+
+    .popup ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .popup li {
+        margin-bottom: 8px;
+    }
+
+    .popup button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .popup button:hover {
+        background-color: #45a049;
+    }
+
     
 
     @media only screen and (max-width: 650px) {
@@ -125,41 +168,60 @@
             <h1 style="color: white;">SPORTIFY</h1>
         </div>
         <div class="notification">
-            <a href="#"><img src="{{ url_for('static', filename='notification-icon.png') }}" alt="Notification"></a>
-        </div>
+          <a href="#" onclick="showNotifications()"><img src="{{ url_for('static', filename='notification-icon.png') }}" alt="Notification"></a>
+      </div>
+      <div id="notificationPopup" class="popup">
+          <h2>Notifications:</h2>
+          <ul>
+              {% for message in message_list %}
+                  <li>{{ message }}</li>
+              {% endfor %}
+          </ul>
+          <button onclick="hideNotifications()">Close</button>
+      </div>
     </header>
   <div class="wrap">
     <div class="box" style="margin-top: 25px; margin-bottom: 20px; margin-left: 200px; margin-right: 75px;">
       <div class="boxInner">
-        <a href="/football_users"><img style="height: 400px; width: 430px;" src="/static/footlball.jpg" alt="Football"></a>
+        <a href="/sport/{{ user_id }}?name=football"><img style="height: 400px; width: 430px;" src="/static/footlball.jpg" alt="Football"></a>
         <div class="titleBox">FOOTBALL</div>
       </div>
     </div>
     <div class="box" style="margin-top: 25px; margin-bottom: 20px;  margin-left: 75px; margin-right: 200px;">
         <div class="boxInner">
-            <a href="/tennis_users"><img style="height: 400px; width: 430px;" src="/static/tennis.jpg" alt="Tennis"></a>   
+            <a href="/sport/{{ user_id }}?name=tennis"><img style="height: 400px; width: 430px;" src="/static/tennis.jpg" alt="Tennis"></a>   
                <div class="titleBox">TENNIS</div>
         </div>
       </div>
       <div class="box" style="margin-top: 20px; margin-bottom: 20px; margin-left: 200px; margin-right: 75px;">
       <div class="boxInner" >
-        <a href="/badminton_users"><img style="height: 400px; width: 430px;" src="/static/badminton.jpeg" alt="Badminton"></a>   
+        <a href="/sport/{{ user_id }}?name=badminton"><img style="height: 400px; width: 430px;" src="/static/badminton.jpeg" alt="Badminton"></a>   
             <div class="titleBox">BADMINTON</div>
       </div>
     </div>
     <div class="box" style="margin-top: 20px; margin-bottom: 20px;  margin-left: 75px; margin-right: 200px;">
       <div class="boxInner">
-        <a href="/basketball_users"><img style="height: 400px; width: 430px;" src="/static/basketball.png" alt="Basketball"></a>   
+        <a href="/sport/{{ user_id }}?name=basketball"><img style="height: 400px; width: 430px;" src="/static/basketball.png" alt="Basketball"></a>   
             <div class="titleBox">BASKETBALL</div>
       </div>
     </div>
     <div class="box" style="margin-top: 20px; margin-bottom: 10px; margin-left: 500px; margin-right: 500px; text-align: center;">
       <div class="boxInner" >
-        <a href="/swimming_users"><img style="height: 400px; width: 430px;" src="/static/swimming.jpg" alt="Swimming"></a>
+        <a href="/sport/{{ user_id }}?name=swimming"><img style="height: 400px; width: 430px;" src="/static/swimming.jpg" alt="Swimming"></a>
         <div class="titleBox">SWIMMING</div>
       </div>
     </div>
   </div>
   </div>
+  <script>
+    // JavaScript functions to show and hide the notification pop-up
+    function showNotifications() {
+        document.getElementById("notificationPopup").style.display = "block";
+    }
+
+    function hideNotifications() {
+        document.getElementById("notificationPopup").style.display = "none";
+    }
+</script>
 </body>
 </html>

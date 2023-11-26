@@ -99,7 +99,6 @@
     <div class="sport-names">
         <h1>{{ sport }} Users</h1>
     </div>
-
     {% if users %}
     <table>
         <thead>
@@ -107,6 +106,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Actions</th> <!-- Added a new column for actions -->
             </tr>
         </thead>
         <tbody>
@@ -115,13 +115,32 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone_number }}</td>
+                <td>
+                    <!-- Add a form for each user -->
+                    <form method="post" action="/send_request">
+                        <label for="ground_selection_{{ user.id }}">Select Ground:</label>
+                        <select id="ground_selection_{{ user.id }}" name="ground_selection">
+                            <option value="Gymkhana ground">Gymkhana ground</option>
+                            <option value="Indoor Court">Indoor Court</option>
+                            <option value="Turf">Turf</option>
+                            <!-- Add more options as needed -->
+                        </select>
+
+                        <!-- Include a hidden input field to store the user ID -->
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <input type="hidden" name="sport" value="{{ sport }}">
+                        <input type="hidden" name="sender_id" value="{{ curr_usr_id }}">
+
+                        <input type="submit" value="Send Request">
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
+{% else %}
     <p class="no-users">No users found for {{ sport }}</p>
-    {% endif %}
+{% endif %}
 </body>
 
 </html>
