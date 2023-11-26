@@ -1,7 +1,8 @@
-from flask import Flask, request, render_template, session, redirect , flash
+from flask import Flask, request, render_template, session, redirect , flash, url_for
 from flask_sqlalchemy import SQLAlchemy
-from os import environ
 import secrets
+from os import environ
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URL')
@@ -32,11 +33,21 @@ def login():
                 return render_template('login.html', alert_message='Username does not match the provided email.')
             else:
                 session['user_identifier'] = existing_user.email
-                return render_template('home.html', user_id=existing_user.id)
+                return redirect(url_for('home', user_id=existing_user.id))
+                # return render_template('home.html', user_id=existing_user.id)
         else:
             return render_template('login.html', alert_message='User does not exist')
     else:
         return render_template('login.html')
+    
+@app.route('/home/<int:user_id>', methods=['GET'])
+def home(user_id):
+    messages=[]
+    if user_id in notifications.keys():
+        messages=reversed(notifications[user_id])
+    else:
+        messages.append("No new message")
+    return render_template('home.html', user_id=user_id, message_list=messages)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -50,11 +61,12 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             session['user_identifier'] = new_user.email
-            return render_template('home.html', user_id=new_user.id)
+            return redirect(url_for('home', user_id=new_user.id))
+
     else:
         return render_template('register.html')
 
-@app.route('/profile/<int:user_id>')
+@app.route('/profile/<int:user_id>', methods=['GET'])
 def profile(user_id):
     user = NewUser.query.get(user_id)
     return render_template('profile.html', user=user)
@@ -84,60 +96,55 @@ def update_preferences():
         flash('User not logged in.', 'error')
         pass
 
-@app.route('/football_users')
-def football_users():
-    user_identifier = session.get('user_identifier')
-    if user_identifier:
-        # Exclude the currently logged-in user
-        users = NewUser.query.filter_by(sports_preference='football').filter(NewUser.email != user_identifier).all()
-        return render_template('users_list.html', users=users, sport='Football')
-    else:
-        flash('User not logged in.', 'error')
-        return redirect('/')
 
-@app.route('/basketball_users')
-def basketball_users():
+@app.route('/sport/<int:user_id>', methods=['GET'])
+def sport(user_id):
+    sport_name = request.args.get('name')  
+    print(sport_name)
     user_identifier = session.get('user_identifier')
     if user_identifier:
-        # Exclude the currently logged-in user
-        users = NewUser.query.filter_by(sports_preference='basketball').filter(NewUser.email != user_identifier).all()
-        return render_template('users_list.html', users=users, sport='BasketBall')
+        # users = NewUser.query.filter_by(sports_preference=sport_name).filter(NewUser.email != user_identifier).all()
+        return redirect(url_for('users_list',user_id=user_id,user_identifier=user_identifier,sport=sport_name))
     else:
-        flash('User not logged in.', 'error')
-        return redirect('/')
+        return redirect(url_for('index'))
 
-@app.route('/tennis_users')
-def tennis_users():
-    user_identifier = session.get('user_identifier')
-    if user_identifier:
-        # Exclude the currently logged-in user
-        users = NewUser.query.filter_by(sports_preference='tennis').filter(NewUser.email != user_identifier).all()
-        return render_template('users_list.html', users=users, sport='Tennis')
-    else:
-        flash('User not logged in.', 'error')
-        return redirect('/')
 
-@app.route('/badminton_users')
-def badminton_users():
-    user_identifier = session.get('user_identifier')
-    if user_identifier:
-        # Exclude the currently logged-in user
-        users = NewUser.query.filter_by(sports_preference='badminton').filter(NewUser.email != user_identifier).all()
-        return render_template('users_list.html', users=users, sport='Badminton')
-    else:
-        flash('User not logged in.', 'error')
-        return redirect('/')
+notifications = {} 
 
-@app.route('/swimming_users')
-def swimming_users():
-    user_identifier = session.get('user_identifier')
-    if user_identifier:
-        # Exclude the currently logged-in user
-        users = NewUser.query.filter_by(sports_preference='swimming').filter(NewUser.email != user_identifier).all()
-        return render_template('users_list.html', users=users, sport='Swimming')
+def add_notification(target_user_id, sender_user, ground_selection,sport):
+    sender_name=NewUser.query.get(sender_user).username
+    notification_message = f"{sender_name} sent a request to play {sport} at {ground_selection}"
+    if target_user_id in notifications:
+        notifications[target_user_id].append(notification_message)
     else:
-        flash('User not logged in.', 'error')
-        return redirect('/')
+        notifications[target_user_id] = [notification_message]
+
+
+@app.route('/send_request', methods=['POST','GET'])
+def send_request():
+    ground_selection = request.form.get('ground_selection')
+    user_id = request.form.get('user_id', type=int)
+    sport = request.form.get('sport')
+    sender_user_id = request.form.get('sender_id')
+    add_notification(target_user_id=user_id, sender_user=sender_user_id, ground_selection=ground_selection,sport=sport)
+    
+    flash('Request sent successfully!', 'success')
+    # users = NewUser.query.filter_by(sports_preference=sport).filter(NewUser.email != user_identifier).all()
+    return redirect(url_for('home', user_id=sender_user_id))
+
+    
+
+
+@app.route('/users_list/<int:user_id>', methods=['GET'])
+def users_list(user_id):
+    user_identifier=request.args.get('user_identifier')
+    print(user_identifier)
+    sport=request.args.get('sport')
+    print(type(sport))
+    users = NewUser.query.filter_by(sports_preference=sport).filter(NewUser.email != user_identifier).all()
+    print(users,sport)
+    return render_template('users_list.html',users=users, sport=sport, curr_usr_id=user_id)
+
 
 
 if __name__ == '__main__':
